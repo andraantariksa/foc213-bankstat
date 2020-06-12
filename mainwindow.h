@@ -8,6 +8,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+// TODO
+// Exract class
 class BankStatement
 {
     Q_GADGET
@@ -54,6 +56,7 @@ public:
     int rowCount(const QModelIndex &) const override {
         return data_list.count();
     }
+
     int columnCount(const QModelIndex &) const override
     {
         return 5;
@@ -94,6 +97,46 @@ public:
         data_list.append(bank_statement);
 
         endInsertRows();
+    }
+
+    Qt::ItemFlags flags(const QModelIndex &index) const override
+    {
+        if (!index.isValid())
+        {
+            return Qt::ItemIsEnabled;
+        }
+
+        return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+    }
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override
+    {
+        if (index.isValid() && role == Qt::EditRole) {
+
+            switch (index.column()) {
+            case 0:
+                data_list[index.row()].name = value.toString();
+                break;
+            case 1:
+                data_list[index.row()].panggilan = (BankStatement::Panggilan)value.toInt();
+                break;
+            case 2:
+                data_list[index.row()].kartu = (BankStatement::Kartu)value.toInt();
+                break;
+            case 3:
+                data_list[index.row()].blok = (BankStatement::Blok)value.toInt();
+                break;
+            case 4:
+                data_list[index.row()].bonus = value.toBool();
+                break;
+            default: return false;
+            }
+
+            emit dataChanged(index, index);
+
+            return true;
+        }
+        return false;
     }
 };
 
