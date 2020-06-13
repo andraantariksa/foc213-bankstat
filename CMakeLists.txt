@@ -39,7 +39,7 @@ else()
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
-  )
+          src/Calculations.cpp)
 endif()
 
 target_link_libraries(Condprob PRIVATE Qt5::Widgets)
