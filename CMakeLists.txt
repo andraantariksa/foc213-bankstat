@@ -32,9 +32,6 @@ if(ANDROID)
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
-
-    src/DelegateComboBox.h
-    src/DelegateComboBox.cpp
   )
 else()
   add_executable(Condprob
@@ -42,9 +39,6 @@ else()
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
-
-    src/DelegateComboBox.h
-    src/DelegateComboBox.cpp
   )
 endif()
 
