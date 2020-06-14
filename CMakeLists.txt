@@ -29,17 +29,27 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 if(ANDROID)
   add_library(Condprob SHARED
     src/main.cpp
+
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
+
+    # TODO
+    # Commented out because of error
+    # src/calculations.cpp
   )
 else()
   add_executable(Condprob
     src/main.cpp
+
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
-          src/Calculations.cpp)
+
+    # TODO
+    # Commented out because of error
+    # src/calculations.cpp
+  )
 endif()
 
 target_link_libraries(Condprob PRIVATE Qt5::Widgets)

@@ -3,15 +3,16 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#include "DelegateComboBox.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    lineEdit.reset(findChild<QLineEdit*>("lineEdit"));
+
     tableWidget.reset(findChild<QTableWidget*>("tableWidget"));
+
     tableWidget->insertRow(tableWidget->rowCount());
     tableWidget->insertColumn(tableWidget->columnCount());
     tableWidget->setVerticalHeaderItem(tableWidget->rowCount() - 1, new QTableWidgetItem("Total"));
@@ -55,6 +56,12 @@ void MainWindow::on_tableWidget_itemChanged(QTableWidgetItem *item)
 
     // TODO
     // Calculation
+    // Example to get data on 0,0 (starts from top left)
+    // tableWidget->item(0, 0)->data(Qt::DisplayRole).toInt();
+
+    // TODO
+    // Display the result of the calculation here
+    lineEdit->setText(QString::number(random() % 101));
 }
 
 void MainWindow::populateTotal()

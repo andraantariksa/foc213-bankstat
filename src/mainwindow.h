@@ -24,6 +24,7 @@ private slots:
 private:
     void populateTotal();
     std::unique_ptr<QTableWidget> tableWidget;
+    std::unique_ptr<QLineEdit> lineEdit;
 
     Ui::MainWindow *ui;
 };
