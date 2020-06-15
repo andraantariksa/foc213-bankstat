@@ -23,9 +23,9 @@ private slots:
 
 private:
     void populateTotal();
+    std::unique_ptr<QTableWidgetItem> TotalCont[2], TotalRap[2], TotalData; // instant use for "total" cells
     std::unique_ptr<QTableWidget> tableWidget;
-    std::unique_ptr<QLineEdit> lineEdit;
-
+    std::unique_ptr<QLineEdit> Line_Acc, Line_Data;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    lineEdit.reset(findChild<QLineEdit*>("lineEdit"));
+    Line_Acc.reset(findChild<QLineEdit*>("Line_Acc"));
 
     tableWidget.reset(findChild<QTableWidget*>("tableWidget"));
 
@@ -34,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
     tableWidget->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    TotalCont[0].reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 3));
+    TotalCont[1].reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 2));
+    TotalRap[0].reset(tableWidget->item(tableWidget->rowCount() - 3, tableWidget->columnCount() - 1));
+    TotalRap[1].reset(tableWidget->item(tableWidget->rowCount() - 2, tableWidget->columnCount() - 1));
+    TotalData.reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 1));
 }
 
 MainWindow::~MainWindow()
@@ -61,7 +66,7 @@ void MainWindow::on_tableWidget_itemChanged(QTableWidgetItem *item)
 
     // TODO
     // Display the result of the calculation here
-    lineEdit->setText(QString::number(random() % 101));
+    //lineEdit->setText(QString::number(random() % 101));
 }
 
 void MainWindow::populateTotal()
@@ -75,7 +80,8 @@ void MainWindow::populateTotal()
             acc_y += tableWidget->item(y, x)->text().toInt();
         }
 
-        tableWidget->item(tableWidget->rowCount() - 1, x)->setData(Qt::DisplayRole, acc_y);
+        qInfo() << x << "\n";
+        TotalCont[x]->setData(Qt::DisplayRole, acc_y);
     }
 
     int acc_x;
@@ -88,6 +94,9 @@ void MainWindow::populateTotal()
             acc_x += tableWidget->item(y, x)->text().toInt();
         }
 
-        tableWidget->item(y, tableWidget->columnCount() - 1)->setData(Qt::DisplayRole, acc_x);
+        qInfo() << y << "\n";
+        TotalRap[y]->setData(Qt::DisplayRole, acc_x);
     }
+
+    TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
 }
