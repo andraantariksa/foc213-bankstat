@@ -1,7 +1,7 @@
 //
 // Created by naavadi64 on 6/13/20.
 //
-
+#include <QApplication>
 // Arguments:
 // CovPositive: virus positive with positive test (True Positive)
 // CovNegative: virus positive with negative test (False Negative)
@@ -11,15 +11,15 @@ double Probability(double CovPositive, double CovNegative, double FreePositive, 
     double TotalCov = CovPositive + CovNegative;
     double TotalFree = FreePositive + FreeNegative;
     double TotalPositive = CovPositive + FreePositive;
-    double TotalNegative = CovNegative + FreeNegative
-    double Total = TotalCov + Totalfree;
+    double TotalNegative = CovNegative + FreeNegative;
+    double Total = TotalCov + TotalFree;
 
     double ProbCov = TotalCov / Total;  // Probability of virus positive in general
     double ProbPositiveCov = CovPositive / TotalCov;  // Probability of testing positive given virus positive
     double ProbNegativeCov = CovNegative / TotalCov;  // Probability of testing negative given virus positive
     double ProbFree = TotalFree / Total;  // Probability of virus negative in general
     double ProbPositiveFree = FreePositive / TotalFree;  // Probability of testing positive given virus negative
-    double PronNegativeFree = FreeNegative / TotalFree;  // Probability of testing negative given virus negative
+    double ProbNegativeFree = FreeNegative / TotalFree;  // Probability of testing negative given virus negative
     double result = 0;
 
     switch(Selector){
@@ -48,7 +48,7 @@ double Probability(double CovPositive, double CovNegative, double FreePositive, 
             break;
 
         default:
-            cout>>"Invalid selector, try again bucko!">>endl;
+            qInfo("Invalid selector, try again bucko!");
             break;
     };
 };
