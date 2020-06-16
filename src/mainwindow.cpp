@@ -104,6 +104,7 @@ void MainWindow::populateTotal()
     TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
 }
 
+// Calculate probabilities and test accuracy
 void MainWindow::calcProbs() {
     int covPos = tableWidget->item(0, 0)->text().toInt();
     int covNeg = tableWidget->item(1, 0)->text().toInt();
@@ -116,6 +117,7 @@ void MainWindow::calcProbs() {
     double PFalseNeg = Calc:: ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
     double acc = (PTruePos+PTrueNeg) / 2;
 
+    // Check zero division
     if (!(int(acc) < 0))
         lbl_Acc->setText(QString::number(int(acc * 100))+" %");
     else
