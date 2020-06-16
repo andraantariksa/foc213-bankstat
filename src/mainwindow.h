@@ -25,7 +25,7 @@ private:
     void populateTotal();
     std::unique_ptr<QTableWidgetItem> TotalCont[2], TotalRap[2], TotalData; // instant use for "total" cells
     std::unique_ptr<QTableWidget> tableWidget;
-    std::unique_ptr<QLineEdit> Line_Acc, Line_Data;
+    std::unique_ptr<QLabel> lbl_Acc, lbl_TruePos, lbl_FalsePos, lbl_TrueNeg, lbl_FalseNeg;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

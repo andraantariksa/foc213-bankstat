@@ -1,5 +1,5 @@
 #include <QtWidgets>
-
+#include "calculations.h"
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -9,7 +9,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    Line_Acc.reset(findChild<QLineEdit*>("Line_Acc"));
+    lbl_Acc.reset(findChild<QLabel*>("label_acc"));
+    lbl_TruePos.reset(findChild<QLabel*>("label_posVir"));
+    lbl_FalsePos.reset(findChild<QLabel*>("label_posNoVir"));
+    lbl_TrueNeg.reset(findChild<QLabel*>("label_negNoVir"));
+    lbl_FalseNeg.reset(findChild<QLabel*>("label_negVir"));
 
     tableWidget.reset(findChild<QTableWidget*>("tableWidget"));
 
@@ -80,7 +84,6 @@ void MainWindow::populateTotal()
             acc_y += tableWidget->item(y, x)->text().toInt();
         }
 
-        qInfo() << x << "\n";
         TotalCont[x]->setData(Qt::DisplayRole, acc_y);
     }
 
@@ -94,9 +97,22 @@ void MainWindow::populateTotal()
             acc_x += tableWidget->item(y, x)->text().toInt();
         }
 
-        qInfo() << y << "\n";
         TotalRap[y]->setData(Qt::DisplayRole, acc_x);
     }
 
+    int covPos = tableWidget->item(0, 0)->text().toInt();
+    int covNeg = tableWidget->item(1, 0)->text().toInt();
+    int freePos = tableWidget->item(0, 1)->text().toInt();
+    int freeNeg = tableWidget->item(1, 1)->text().toInt();
+
+    QString PTruePos  = QString::number(int(Calc:: ProbTruePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt())  * 100));
+    QString PFalsePos = QString::number(int(Calc:: ProbFalsePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt()) * 100));
+    QString PTrueNeg  = QString::number(int(Calc:: ProbTrueNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt())  * 100));
+    QString PFalseNeg = QString::number(int(Calc:: ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt()) * 100));
+
+    lbl_TruePos->setText(PTruePos+" %");
+    lbl_TrueNeg->setText(PTrueNeg+" %");
+    lbl_FalsePos->setText(PFalsePos+" %");
+    lbl_FalseNeg->setText(PFalseNeg+" %");
     TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
 }
