@@ -9,44 +9,56 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    lbl_Acc.reset(findChild<QLabel*>("label_acc"));
-    lbl_TruePos.reset(findChild<QLabel*>("label_posVir"));
-    lbl_FalsePos.reset(findChild<QLabel*>("label_posNoVir"));
-    lbl_TrueNeg.reset(findChild<QLabel*>("label_negNoVir"));
-    lbl_FalseNeg.reset(findChild<QLabel*>("label_negVir"));
+    label_acc.reset(findChild<QLabel*>("label_acc"));
+    label_truePos.reset(findChild<QLabel*>("label_posVir"));
+    label_falsePos.reset(findChild<QLabel*>("label_posNoVir"));
+    label_trueNeg.reset(findChild<QLabel*>("label_negNoVir"));
+    label_falseNeg.reset(findChild<QLabel*>("label_negVir"));
+    tableWidget_main.reset(findChild<QTableWidget*>("tableWidget_main"));
 
-    tableWidget.reset(findChild<QTableWidget*>("tableWidget"));
+    tableWidget_main->insertRow(tableWidget_main->rowCount());
+    tableWidget_main->insertColumn(tableWidget_main->columnCount());
+    tableWidget_main->setVerticalHeaderItem(tableWidget_main->rowCount() - 1, new QTableWidgetItem("Total"));
+    tableWidget_main->setHorizontalHeaderItem(tableWidget_main->columnCount() - 1, new QTableWidgetItem("Total"));
 
-    tableWidget->insertRow(tableWidget->rowCount());
-    tableWidget->insertColumn(tableWidget->columnCount());
-    tableWidget->setVerticalHeaderItem(tableWidget->rowCount() - 1, new QTableWidgetItem("Total"));
-    tableWidget->setHorizontalHeaderItem(tableWidget->columnCount() - 1, new QTableWidgetItem("Total"));
-
-    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    for (int x = 0; x < tableWidget->columnCount(); ++x)
+    tableWidget_main->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    for (int x = 0; x < tableWidget_main->columnCount(); ++x)
     {
-        for (int y = 0; y < tableWidget->rowCount(); ++y)
+        for (int y = 0; y < tableWidget_main->rowCount(); ++y)
         {
             auto temp = new QTableWidgetItem;
             temp->setData(Qt::DisplayRole, 0);
             // If on bottom or right edge
-            if (x == tableWidget->columnCount() - 1 || y == tableWidget->rowCount() - 1)
+            if (x == tableWidget_main->columnCount() - 1 || y == tableWidget_main->rowCount() - 1)
             {
                 temp->setFlags(Qt::NoItemFlags);
             }
-            tableWidget->setItem(y, x, temp);
+            tableWidget_main->setItem(y, x, temp);
         }
     }
-    tableWidget->setEditTriggers(QAbstractItemView::AllEditTriggers);
-    TotalCont[0].reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 3));
-    TotalCont[1].reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 2));
-    TotalRap[0].reset(tableWidget->item(tableWidget->rowCount() - 3, tableWidget->columnCount() - 1));
-    TotalRap[1].reset(tableWidget->item(tableWidget->rowCount() - 2, tableWidget->columnCount() - 1));
-    TotalData.reset(tableWidget->item(tableWidget->rowCount() - 1, tableWidget->columnCount() - 1));
+    tableWidget_main->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    TotalCont[0].reset(tableWidget_main->item(tableWidget_main->rowCount() - 1, tableWidget_main->columnCount() - 3));
+    TotalCont[1].reset(tableWidget_main->item(tableWidget_main->rowCount() - 1, tableWidget_main->columnCount() - 2));
+    TotalRap[0].reset(tableWidget_main->item(tableWidget_main->rowCount() - 3, tableWidget_main->columnCount() - 1));
+    TotalRap[1].reset(tableWidget_main->item(tableWidget_main->rowCount() - 2, tableWidget_main->columnCount() - 1));
+    TotalData.reset(tableWidget_main->item(tableWidget_main->rowCount() - 1, tableWidget_main->columnCount() - 1));
 }
 
 MainWindow::~MainWindow()
 {
+    // Vibe check for the pointer
+    label_acc.~unique_ptr();
+    label_truePos.~unique_ptr();
+    label_falsePos.~unique_ptr();
+    label_trueNeg.~unique_ptr();
+    label_falseNeg.~unique_ptr();
+    TotalData.~unique_ptr();
+    TotalCont[0].~unique_ptr();
+    TotalCont[1].~unique_ptr();
+    TotalRap[0].~unique_ptr();
+    TotalRap[1].~unique_ptr();
+    tableWidget_main.~unique_ptr();
+
     delete ui;
 }
 
@@ -56,49 +68,40 @@ void MainWindow::on_actionClose_triggered()
     QCoreApplication::quit();
 }
 
-void MainWindow::on_tableWidget_itemChanged(QTableWidgetItem *item)
+void MainWindow::on_tableWidget_main_itemChanged(QTableWidgetItem *item)
 {
-    if (tableWidget->editTriggers() == QAbstractItemView::AllEditTriggers)
+    if (tableWidget_main->editTriggers() == QAbstractItemView::AllEditTriggers)
     {
         populateTotal();
         calcProbs();
     }
-
-    // TODO
-    // Calculation
-    // Example to get data on 0,0 (starts from top left)
-    // tableWidget->item(0, 0)->data(Qt::DisplayRole).toInt();
-
-    // TODO
-    // Display the result of the calculation here
-    //lineEdit->setText(QString::number(random() % 101));
 }
 
 void MainWindow::populateTotal()
 {
-    int acc_y;
-    for (int x = 0; x < tableWidget->columnCount() - 1; ++x)
+    int accY;
+    for (int x = 0; x < tableWidget_main->columnCount() - 1; ++x)
     {
-        acc_y = 0;
-        for (int y = 0; y < tableWidget->rowCount() - 1; ++y)
+        accY = 0;
+        for (int y = 0; y < tableWidget_main->rowCount() - 1; ++y)
         {
-            acc_y += tableWidget->item(y, x)->text().toInt();
+            accY += tableWidget_main->item(y, x)->text().toInt();
         }
 
-        TotalCont[x]->setData(Qt::DisplayRole, acc_y);
+        TotalCont[x]->setData(Qt::DisplayRole, accY);
     }
 
-    int acc_x;
-    for (int y = 0; y < tableWidget->rowCount() - 1; ++y)
+    int accX;
+    for (int y = 0; y < tableWidget_main->rowCount() - 1; ++y)
     {
-        acc_x = 0;
+        accX = 0;
 
-        for (int x = 0; x < tableWidget->columnCount() - 1; ++x)
+        for (int x = 0; x < tableWidget_main->columnCount() - 1; ++x)
         {
-            acc_x += tableWidget->item(y, x)->text().toInt();
+            accX += tableWidget_main->item(y, x)->text().toInt();
         }
 
-        TotalRap[y]->setData(Qt::DisplayRole, acc_x);
+        TotalRap[y]->setData(Qt::DisplayRole, accX);
     }
 
     TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
@@ -106,36 +109,60 @@ void MainWindow::populateTotal()
 
 // Calculate probabilities and test accuracy
 void MainWindow::calcProbs() {
-    int covPos = tableWidget->item(0, 0)->text().toInt();
-    int covNeg = tableWidget->item(1, 0)->text().toInt();
-    int freePos = tableWidget->item(0, 1)->text().toInt();
-    int freeNeg = tableWidget->item(1, 1)->text().toInt();
+    int covPos = tableWidget_main->item(0, 0)->text().toInt();
+    int covNeg = tableWidget_main->item(1, 0)->text().toInt();
+    int freePos = tableWidget_main->item(0, 1)->text().toInt();
+    int freeNeg = tableWidget_main->item(1, 1)->text().toInt();
 
-    double PTruePos  = Calc:: ProbTruePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
-    double PTrueNeg  = Calc:: ProbTrueNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
-    double PFalsePos = Calc:: ProbFalsePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
-    double PFalseNeg = Calc:: ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
-    double acc = (PTruePos+PTrueNeg) / 2;
+    double pTruePos  = Calc::ProbTruePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double pTrueNeg  = Calc::ProbTrueNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double pFalsePos = Calc::ProbFalsePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double pFalseNeg = Calc::ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double acc = (pTruePos + pTrueNeg) / 2.0;
 
     // Check zero division
-    if (!(int(acc) < 0))
-        lbl_Acc->setText(QString::number(int(acc * 100))+" %");
+    if (acc > 0)
+    {
+        label_acc->setText(QString::number(acc * 100.0) + " %");
+    }
     else
-        lbl_Acc->setText("-. %");
-    if (!(int(PTruePos) < 0))
-        lbl_TruePos->setText(QString::number(int(PTruePos * 100))+" %");
+    {
+        label_acc->setText("- %");
+    }
+
+    if (pTruePos > 0)
+    {
+        label_truePos->setText(QString::number(pTruePos * 100.0) + " %");
+    }
     else
-        lbl_TruePos->setText("-. %");
-    if (!(int(PTrueNeg) < 0))
-        lbl_TrueNeg->setText(QString::number(int(PTrueNeg * 100))+" %");
+    {
+        label_truePos->setText("- %");
+    }
+
+    if (pTrueNeg > 0)
+    {
+        label_trueNeg->setText(QString::number(pTrueNeg * 100.0) + " %");
+    }
     else
-        lbl_TrueNeg->setText("-. %");
-    if (!(int(PFalsePos) < 0))
-        lbl_FalsePos->setText(QString::number(int(PFalsePos * 100))+" %");
+    {
+        label_trueNeg->setText("- %");
+    }
+
+    if (pFalsePos > 0)
+    {
+        label_falsePos->setText(QString::number(pFalsePos * 100.0) + " %");
+    }
     else
-        lbl_FalsePos->setText("-. %");
-    if (!(int(PFalseNeg) < 0))
-        lbl_FalseNeg->setText(QString::number(int(PFalseNeg * 100))+" %");
+    {
+        label_falsePos->setText("- %");
+    }
+
+    if (pFalseNeg > 0)
+    {
+        label_falseNeg->setText(QString::number(pFalseNeg * 100.0) + " %");
+    }
     else
-        lbl_FalseNeg->setText("-. %");
+    {
+        label_falseNeg->setText("- %");
+    }
 }

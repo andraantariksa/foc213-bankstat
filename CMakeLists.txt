@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Condprob LANGUAGES CXX)
+project(ravitprob LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -27,29 +27,27 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 if(ANDROID)
-  add_library(Condprob SHARED
+  add_library(ravitprob SHARED
     src/main.cpp
 
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
 
-    # TODO
-    # Commented out because of error
-    # src/calculations.cpp
+    src/calculations.h
+    src/calculations.cpp
   )
 else()
-  add_executable(Condprob
+  add_executable(ravitprob
     src/main.cpp
 
     src/mainwindow.cpp
     src/mainwindow.h
     src/mainwindow.ui
 
-    # TODO
-    # Commented out because of error
-    # src/calculations.cpp
+    src/calculations.h
+    src/calculations.cpp
   )
 endif()
 
-target_link_libraries(Condprob PRIVATE Qt5::Widgets)
+target_link_libraries(ravitprob PRIVATE Qt5::Widgets)

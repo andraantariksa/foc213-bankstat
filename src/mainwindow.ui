@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Ravitprob</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="5" column="1">
      <widget class="QLabel" name="label_posNoVir">
       <property name="text">
-       <string>-.%</string>
+       <string>- %</string>
       </property>
      </widget>
     </item>
@@ -57,7 +57,7 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="tableWidget_main">
       <row>
        <property name="text">
         <string>Positive</string>
@@ -103,7 +103,7 @@
     <item row="3" column="1">
      <widget class="QLabel" name="label_posVir">
       <property name="text">
-       <string>-.%</string>
+       <string>- %</string>
       </property>
      </widget>
     </item>
@@ -117,7 +117,7 @@
     <item row="7" column="1">
      <widget class="QLabel" name="label_negNoVir">
       <property name="text">
-       <string>-.%</string>
+       <string>- %</string>
       </property>
      </widget>
     </item>
@@ -131,7 +131,7 @@
     <item row="6" column="1">
      <widget class="QLabel" name="label_negVir">
       <property name="text">
-       <string>-.%</string>
+       <string>- %</string>
       </property>
      </widget>
     </item>
@@ -145,7 +145,7 @@
     <item row="2" column="1">
      <widget class="QLabel" name="label_acc">
       <property name="text">
-       <string>-.%</string>
+       <string>- %</string>
       </property>
      </widget>
     </item>
@@ -157,7 +157,7 @@
      <x>0</x>
      <y>0</y>
      <width>524</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuCondprob">
