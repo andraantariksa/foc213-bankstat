@@ -23,6 +23,7 @@ private slots:
 
 private:
     void populateTotal();
+    void calcProbs();
     std::unique_ptr<QTableWidgetItem> TotalCont[2], TotalRap[2], TotalData; // instant use for "total" cells
     std::unique_ptr<QTableWidget> tableWidget;
     std::unique_ptr<QLabel> lbl_Acc, lbl_TruePos, lbl_FalsePos, lbl_TrueNeg, lbl_FalseNeg;

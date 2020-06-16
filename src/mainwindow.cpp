@@ -61,6 +61,7 @@ void MainWindow::on_tableWidget_itemChanged(QTableWidgetItem *item)
     if (tableWidget->editTriggers() == QAbstractItemView::AllEditTriggers)
     {
         populateTotal();
+        calcProbs();
     }
 
     // TODO
@@ -100,19 +101,39 @@ void MainWindow::populateTotal()
         TotalRap[y]->setData(Qt::DisplayRole, acc_x);
     }
 
+    TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
+}
+
+void MainWindow::calcProbs() {
     int covPos = tableWidget->item(0, 0)->text().toInt();
     int covNeg = tableWidget->item(1, 0)->text().toInt();
     int freePos = tableWidget->item(0, 1)->text().toInt();
     int freeNeg = tableWidget->item(1, 1)->text().toInt();
 
-    QString PTruePos  = QString::number(int(Calc:: ProbTruePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt())  * 100));
-    QString PFalsePos = QString::number(int(Calc:: ProbFalsePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt()) * 100));
-    QString PTrueNeg  = QString::number(int(Calc:: ProbTrueNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt())  * 100));
-    QString PFalseNeg = QString::number(int(Calc:: ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt()) * 100));
+    double PTruePos  = Calc:: ProbTruePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double PTrueNeg  = Calc:: ProbTrueNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double PFalsePos = Calc:: ProbFalsePositive(covPos, freePos, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double PFalseNeg = Calc:: ProbFalseNegative(covNeg, freeNeg, TotalCont[0]->text().toInt(), TotalCont[1]->text().toInt());
+    double acc = (PTruePos+PTrueNeg) / 2;
 
-    lbl_TruePos->setText(PTruePos+" %");
-    lbl_TrueNeg->setText(PTrueNeg+" %");
-    lbl_FalsePos->setText(PFalsePos+" %");
-    lbl_FalseNeg->setText(PFalseNeg+" %");
-    TotalData->setData(Qt::DisplayRole, TotalRap[0]->text().toInt() + TotalRap[1]->text().toInt());
+    if (!(int(acc) < 0))
+        lbl_Acc->setText(QString::number(int(acc * 100))+" %");
+    else
+        lbl_Acc->setText("-. %");
+    if (!(int(PTruePos) < 0))
+        lbl_TruePos->setText(QString::number(int(PTruePos * 100))+" %");
+    else
+        lbl_TruePos->setText("-. %");
+    if (!(int(PTrueNeg) < 0))
+        lbl_TrueNeg->setText(QString::number(int(PTrueNeg * 100))+" %");
+    else
+        lbl_TrueNeg->setText("-. %");
+    if (!(int(PFalsePos) < 0))
+        lbl_FalsePos->setText(QString::number(int(PFalsePos * 100))+" %");
+    else
+        lbl_FalsePos->setText("-. %");
+    if (!(int(PFalseNeg) < 0))
+        lbl_FalseNeg->setText(QString::number(int(PFalseNeg * 100))+" %");
+    else
+        lbl_FalseNeg->setText("-. %");
 }
