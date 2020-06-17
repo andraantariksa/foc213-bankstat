@@ -121,7 +121,7 @@ void MainWindow::calcProbs() {
     double acc = (pTruePos + pTrueNeg) / 2.0;
 
     // Check zero division
-    if (acc > 0)
+    if ((int)acc >= 0)
     {
         label_acc->setText(QString::number(acc * 100.0) + " %");
     }
@@ -130,7 +130,7 @@ void MainWindow::calcProbs() {
         label_acc->setText("- %");
     }
 
-    if (pTruePos > 0)
+    if ((int)pTruePos >= 0)
     {
         label_truePos->setText(QString::number(pTruePos * 100.0) + " %");
     }
@@ -139,7 +139,7 @@ void MainWindow::calcProbs() {
         label_truePos->setText("- %");
     }
 
-    if (pTrueNeg > 0)
+    if ((int)pTrueNeg >= 0)
     {
         label_trueNeg->setText(QString::number(pTrueNeg * 100.0) + " %");
     }
@@ -148,7 +148,7 @@ void MainWindow::calcProbs() {
         label_trueNeg->setText("- %");
     }
 
-    if (pFalsePos > 0)
+    if ((int)pFalsePos >= 0)
     {
         label_falsePos->setText(QString::number(pFalsePos * 100.0) + " %");
     }
@@ -157,7 +157,7 @@ void MainWindow::calcProbs() {
         label_falsePos->setText("- %");
     }
 
-    if (pFalseNeg > 0)
+    if ((int)pFalseNeg >= 0)
     {
         label_falseNeg->setText(QString::number(pFalseNeg * 100.0) + " %");
     }
