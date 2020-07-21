@@ -1,7 +1,9 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
+#include <iostream>
 
 #include "application.h"
+#include "utils.h"
 
 Application::Application(int window_width, int window_height, const sf::String& title) :
 	window_main(std::make_unique<sf::RenderWindow>(sf::VideoMode(window_width, window_height), title))

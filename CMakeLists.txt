@@ -52,6 +52,7 @@ endif()
 set(SOURCE
         src/main.cc
 
+        src/utils.cc
         src/application.cc)
 
 add_executable(Ravitprob
