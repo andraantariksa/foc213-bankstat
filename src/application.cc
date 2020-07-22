@@ -6,7 +6,12 @@
 #include "utils.h"
 
 Application::Application(int window_width, int window_height, const sf::String& title) :
-	window_main(std::make_unique<sf::RenderWindow>(sf::VideoMode(window_width, window_height), title))
+        window_main(std::make_unique<sf::RenderWindow>(sf::VideoMode(window_width, window_height), title,
+                sf::Style::Titlebar |
+                sf::Style::Close)),
+        total_dice(1),
+        total_eyes(1),
+        dice_side_total(6)
 {
 	// Should be limited to avoid high computation
 	// Without this, the computer will works really hard
@@ -25,6 +30,20 @@ Application::~Application()
 
 void Application::updateInterface()
 {
+    ImGui::SetNextWindowPos(sf::Vector2f(0.0, 0.0));
+    ImGui::SetNextWindowSize(sf::Vector2f(500.0, 200.0));
+    if (ImGui::Begin("Joint Distribution", nullptr,
+            ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove |
+            ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::InputInt("Total dice", &this->total_dice, 1, 2);
+        ImGui::InputInt("Total dice side", &this->dice_side_total, 1, 2);
+        ImGui::InputInt("Expected total eyes", &this->total_eyes, 1, 2);
+
+        ImGui::Text("Probability %lf%%", diceEyesProbability(this->total_dice, this->total_eyes, this->dice_side_total) * 100.0);
+    }
+    ImGui::End();
 }
 
 void Application::dispatch()
@@ -45,8 +64,6 @@ void Application::dispatch()
 		}
 
 		window_main->clear(sf::Color::White);
-
-		updateInterface();
 
 		ImGui::SFML::Update(*window_main, delta_clock.restart());
 
