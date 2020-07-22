@@ -4,6 +4,6 @@
 
 int main()
 {
-	Application app(1000, 600, sf::String("Polygon Paint"));
+	Application app(1000, 600, sf::String("Conditional Probability"));
 	app.dispatch();
 }

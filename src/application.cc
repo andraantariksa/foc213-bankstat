@@ -44,11 +44,9 @@ void Application::dispatch()
 
 		window_main->clear(sf::Color::White);
 
-		updateInterface();
-
 		ImGui::SFML::Update(*window_main, delta_clock.restart());
 
-		this->updateInterface();
+		updateInterface();
 
 		ImGui::SFML::Render(*window_main);
 

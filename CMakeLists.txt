@@ -54,38 +54,15 @@ set(SOURCE
 
         src/application.cc)
 
-add_executable(Ravitprob
+add_executable(ravitprob
         ${SOURCE})
 
-target_include_directories(Ravitprob
+target_include_directories(ravitprob
         PRIVATE)
 
-target_link_libraries(Ravitprob
+target_link_libraries(ravitprob
         PRIVATE
         sfml-graphics
         sfml-system
         sfml-window
         ImGui-SFML::ImGui-SFML)
-
-if(MSVC)
-    configure_file(
-            ${imgui_sfml_BINARY_DIR}/ImGui-SFML.dll
-            ImGui-SFML.dll
-            COPYONLY
-    )
-    configure_file(
-            ${sfml_BINARY_DIR}/lib/sfml-graphics-d-2.dll
-            sfml-graphics-d-2.dll
-            COPYONLY
-    )
-    configure_file(
-            ${sfml_BINARY_DIR}/lib/sfml-window-d-2.dll
-            sfml-window-d-2.dll
-            COPYONLY
-    )
-    configure_file(
-            ${sfml_BINARY_DIR}/lib/sfml-system-d-2.dll
-            sfml-system-d-2.dll
-            COPYONLY
-    )
-endif()
