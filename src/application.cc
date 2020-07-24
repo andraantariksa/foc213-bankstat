@@ -30,32 +30,38 @@ Application::~Application()
 void Application::updateInterface()
 {
 	ImGui::SetNextWindowPos(sf::Vector2f(0.0, 0.0));
-	ImGui::SetNextWindowSize(sf::Vector2f(500.0, 200.0));
-	if (ImGui::Begin("Joint Distribution", nullptr,
+	ImGui::SetNextWindowSize(sf::Vector2f(600.0, 150.0));
+	if (ImGui::Begin("Conditional Probability", nullptr,
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoCollapse))
 	{
-		ImGui::InputInt("Total days of all dating (same day indoor & outdoor counted as 1)", &this->num_dates, 1, 5);
+		ImGui::InputInt("Total days of all dating", &this->num_dates, 1, 5);
 		ImGui::InputInt("Total days of dating outdoor", &this->date_out, 1, 5);
 		ImGui::InputInt("Total days of dating indoor", &this->date_in, 1, 5);
-		if (this->num_dates == 0) {
+		if (this->num_dates == 0)
+		{
 			ImGui::Text("Probability dating outdoor when you have dated indoor at the same day NaN%%");
 			ImGui::Text("Probability dating indoor when you have dated outdoor at the same day NaN%%");
 		}
-		else {
-			if (this->date_in == 0){
+		else
+		{
+			if (this->date_in == 0)
+			{
 				ImGui::Text("Probability dating outdoor when you have dated indoor at the same day NaN%%");
 			}
-			else {
-				ImGui::Text("Probability dating outdoor when you have dated indoor at the same day%lf%%", datingProb(this->num_dates, this->date_out, this->date_in)[0] * 100.0);
+			else
+			{
+				ImGui::Text("Probability dating outdoor when you have dated indoor at the same day%lf%%", datingProb(this->num_dates, this->date_out, this->date_in).a * 100.0);
 			}
 			
-			if (this->date_in == 0){
+			if (this->date_in == 0)
+			{
 				ImGui::Text("Probability dating indoor when you have dated outdoor at the same day NaN%%");
 			}
-			else {
-				ImGui::Text("Probability dating indoor when you have dated outdoor at the same day%lf%%", datingProb(this->num_dates, this->date_out, this->date_in)[1] * 100.0);
+			else
+			{
+				ImGui::Text("Probability dating indoor when you have dated outdoor at the same day%lf%%", datingProb(this->num_dates, this->date_out, this->date_in).b * 100.0);
 			}
 		}
 		

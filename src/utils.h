@@ -3,6 +3,12 @@
 
 #include <vector>
 
-std::vector<double> datingProb(int num_dates, int date_out, int date_in);
+struct ResultDatingProb
+{
+	double a;
+	double b;
+};
+
+ResultDatingProb datingProb(double num_dates, double date_out, double date_in);
 
 #endif //RAVITPROB_UTILS_H

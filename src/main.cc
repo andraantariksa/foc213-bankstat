@@ -4,6 +4,6 @@
 
 int main()
 {
-	Application app(1000, 600, sf::String("Conditional Probability"));
+	Application app(600, 150, sf::String("Conditional Probability"));
 	app.dispatch();
 }

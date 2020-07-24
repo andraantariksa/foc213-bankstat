@@ -52,7 +52,8 @@ endif()
 set(SOURCE
         src/main.cc
 
-        src/application.cc)
+        src/application.cc
+        src/utils.cc)
 
 add_executable(ravitprob
         ${SOURCE})

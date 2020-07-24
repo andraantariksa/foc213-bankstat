@@ -1,5 +1,7 @@
 # Conditional Probability
 
+Report: https://docs.google.com/document/d/1K9ZtttS__gYakpNEeGACQaMU91tFPWWXEILJoH6ia0c/edit?usp=sharing
+
 ## Prerequisites
 
 - CMake >= 3.10
